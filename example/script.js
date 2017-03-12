@@ -4,13 +4,13 @@
 var authConfig = {
     authProviderUrl: 'provider.html',
     handleAuthSuccess: function (userData) {
-        console.log('auth success', userData);
+        console.log('auth success', userData); // {auth_token: "xxxx", uid: "yyyy", name: "Slemp Diggler"}
     },
     handleAuthFailure: function (error) {
-        console.log('auth failure', error);
+        console.log('auth failure', error); // {reason: "unauthorized", errors: Array(1)}
     },
     handleAuthStart: function (event) {
-        console.log('auth start', event);
+        console.log('auth start', event); //  // {message: "Auth has started"}
     }
 };
 
