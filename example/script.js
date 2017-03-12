@@ -6,7 +6,7 @@ var authConfig = {
     storageTTL: 60,                             // in seconds
     storage: new VinylStorage(localStorage),
     refreshTokenPath: 'refreshtoken.json',      // if path is not set, refresh token mechanism is deactivated
-    refreshTokenInterval: 3,                    // in seconds
+    refreshTokenInterval: 15,                    // in seconds
     handleAuthSuccess: function (userData) {
         console.log('auth success', userData);  // {auth_token: "xxxx", uid: "yyyy", name: "Slemp Diggler"}
     },
@@ -22,7 +22,7 @@ var auth = new VinylAuth(authConfig);
 auth.initialize();
 
 function doAuth(force) {
-    auth.authenticate(force);
+    auth.authenticate(force);       // Can be forced to ignore current storage
 }
 
 function showRecord() {

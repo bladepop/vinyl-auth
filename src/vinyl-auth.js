@@ -89,12 +89,10 @@ var VinylAuth = (function vinylAuth(_config) {
     function authenticate (forceAuth) {
         forceAuth = forceAuth || false;
         config.handleAuthStart({message: 'Auth has started'});
-        if (!forceAuth && !!config.storage) {
-            var record = getRecord();
-            if (!!record) {
-                handleValidAuth(record);
-                return;
-            }
+        var record = getRecord();
+        if (!forceAuth && !!record) {
+            handleValidAuth(record);
+            return;
         }
         openAuthWindow();
     }
