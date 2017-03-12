@@ -6,10 +6,10 @@ A simple, short and vanilla javascript compatible token authentication library
 ``` javascript
 var authConfig = {
     authProviderPath: 'provider.html',          // the path for the auth provider page
-    storageTTL: 10,                             // in seconds
+    storageTTL: 60,                             // in seconds
     storage: new VinylStorage(localStorage),
     refreshTokenPath: 'refreshtoken.json',      // if path is not set, refresh token mechanism is deactivated
-    refreshTokenInterval: 5,                    // in seconds
+    refreshTokenInterval: 15,                    // in seconds
     handleAuthSuccess: function (userData) {
         console.log('auth success', userData);  // {auth_token: "xxxx", uid: "yyyy", name: "Slemp Diggler"}
     },
@@ -18,20 +18,32 @@ var authConfig = {
     },
     handleAuthStart: function (event) {
         console.log('auth start', event);       // {message: "Auth has started"}
+    },
+    handleAuthLogout: function (event) {
+        console.log('logout', event);           // {message: "Logout"}
     }
 };
 ```
 
 ## Basic usage example
 ``` javascript
+
 var auth = new VinylAuth(authConfig);
 auth.initialize();
 
-function doAuth() {
-    auth.authenticate();
+function doAuth(force) {
+    auth.authenticate(force);       // Can be forced to ignore current storage
 }
 
-doAuth();
+function showRecord() {
+    console.log(auth.getRecord());
+}
+
+function logout() {
+    auth.logout();
+}
+
+doAuth(false);
 ```
 
 ## TODO
