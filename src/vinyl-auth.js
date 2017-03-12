@@ -5,18 +5,25 @@
 var VinylAuth = (function vinylAuth(_config) {
 
     var config = {
-        authProviderUrl: _config.authProviderUrl || '',
+        authProviderPath: _config.authProviderPath || '',
         handleAuthSuccess: _config.handleAuthSuccess || console.log,
         handleAuthFailure: _config.handleAuthFailure || console.log,
-        handleAuthStart: _config.handleAuthStart || console.log
+        handleAuthStart: _config.handleAuthStart || console.log,
+        storage: _config.storage || null,
+        storageTTL: _config.storageTTL || 1200, // seconds
+        refreshTokenPath: _config.refreshTokenPath || null,
+        refreshTokenInterval: _config.refreshTokenInterval || 600, // seconds
     };
 
     var requestCredentialsPollingTimer;
 
+    var currentUserRecord = null;
 
     function initialize () {
         initializeListeners();
-        console.log('authModule initialized');
+        if (!!config.refreshTokenPath) {
+            initRefreshToken();
+        }
     }
 
     function initializeListeners () {
@@ -61,6 +68,7 @@ var VinylAuth = (function vinylAuth(_config) {
     function handlePostMessage (ev) {
         if (ev.data.message == 'deliverCredentials') {
             delete ev.data.message;
+            setRecord(ev.data);
             handleValidAuth(ev.data);
         }
         if (ev.data.message == 'authFailure') {
@@ -77,17 +85,62 @@ var VinylAuth = (function vinylAuth(_config) {
         config.handleAuthSuccess(user);
     }
 
-    function authenticate () {
+    function authenticate (forceAuth) {
+        forceAuth = forceAuth || false;
         config.handleAuthStart({message: 'Auth has started'});
+        if (!forceAuth && !!config.storage) {
+            var record = getRecord();
+            if (!!record) {
+                handleValidAuth(record);
+                return;
+            }
+        }
         openAuthWindow();
     }
 
+    function refreshToken() {
+        var record = getRecord();
+        if (!!record) {
+            var xmlhttp = new XMLHttpRequest();
+            var url = config.refreshTokenPath + "?token=" + record.auth_token;
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var record = JSON.parse(this.responseText);
+                    setRecord(record);
+                }
+            };
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+        initRefreshToken();
+    }
+
+    function initRefreshToken() {
+        setTimeout(refreshToken, config.refreshTokenInterval * 1000);
+    }
+
     function openAuthWindow () {
-        requestCredntialsViaPostMessage(createPopup(config.authProviderUrl));
+        requestCredntialsViaPostMessage(createPopup(config.authProviderPath));
+    }
+
+    function getRecord () {
+        if (currentUserRecord == null && !!config.storage) {
+            currentUserRecord = config.storage.get();
+        }
+        return currentUserRecord;
+    }
+
+    function setRecord (record) {
+        currentUserRecord = record;
+        if(config.storage) {
+            config.storage.set(record, config.storageTTL);
+        }
     }
 
     return {
         initialize: initialize,
-        authenticate: authenticate
+        authenticate: authenticate,
+        getRecord: getRecord
     }
 });
