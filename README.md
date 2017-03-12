@@ -1,3 +1,4 @@
+![vinyl image](http://findicons.com/files/icons/2315/default_icon/256/media_vinyl_33_1_3.png)
 # vinyl-auth
 A simple, short and vanilla javascript compatible token authentication library
 
