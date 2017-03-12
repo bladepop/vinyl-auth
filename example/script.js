@@ -15,6 +15,9 @@ var authConfig = {
     },
     handleAuthStart: function (event) {
         console.log('auth start', event);       // {message: "Auth has started"}
+    },
+    handleAuthLogout: function (event) {
+        console.log('logout', event);           // {message: "Logout"}
     }
 };
 

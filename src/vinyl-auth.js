@@ -9,6 +9,7 @@ var VinylAuth = (function vinylAuth(_config) {
         handleAuthSuccess: _config.handleAuthSuccess || console.log,
         handleAuthFailure: _config.handleAuthFailure || console.log,
         handleAuthStart: _config.handleAuthStart || console.log,
+        handleAuthLogout: _config.handleAuthLogout || console.log,
         storage: _config.storage || null,
         storageTTL: _config.storageTTL || 1200, // seconds
         refreshTokenPath: _config.refreshTokenPath || null,
@@ -88,13 +89,13 @@ var VinylAuth = (function vinylAuth(_config) {
 
     function authenticate (forceAuth) {
         forceAuth = forceAuth || false;
-        config.handleAuthStart({message: 'Auth has started'});
+        config.handleAuthStart({message: 'Auth has started', forceAuth: forceAuth});
         var record = getRecord();
         if (!forceAuth && !!record) {
             handleValidAuth(record);
-            return;
+        } else {
+            openAuthWindow();
         }
-        openAuthWindow();
     }
 
     function refreshToken() {
@@ -142,6 +143,7 @@ var VinylAuth = (function vinylAuth(_config) {
         if (!!config.storage) {
             config.storage.set(null);
         }
+        config.handleAuthLogout({message: "Logout"})
     }
 
     return {
