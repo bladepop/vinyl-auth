@@ -8,9 +8,18 @@ var authConfig = {
     },
     authFailureCallback: function (error) {
         console.log('auth failure', error);
+    },
+    authStartCallback: function (event) {
+        console.log('auth start', event);
     }
 };
 
 var auth = new VinylAuth(authConfig);
 auth.initialize();
-auth.authenticate();
+
+function doAuth() {
+    auth.authenticate();
+}
+
+doAuth();
+

@@ -8,7 +8,8 @@ var VinylAuth = (function vinylAuth(_config) {
     var config = {
         authUrl: _config.authUrl || '',
         authSuccessCallback: _config.authSuccessCallback || console.log,
-        authFailureCallback: _config.authFailureCallback || console.log
+        authFailureCallback: _config.authFailureCallback || console.log,
+        authStartCallback: _config.authStartCallback || console.log
     };
 
     function initialize () {
@@ -29,15 +30,20 @@ var VinylAuth = (function vinylAuth(_config) {
     }
 
     function requestCredntialsViaPostMessage (authWindow) {
-        if (authWindow.closed) {
-            handleAuthWindowClose(authWindow);
+        if (authWindow == null) {
+           cancel({
+                reason: 'unauthorized',
+                errors: ['Auth window failed to open']
+           });
+        } else if (authWindow.closed) {
+            handleAuthWindowClose();
         } else {
             authWindow.postMessage("requestCredentials", "*");
             requestCredentialsPollingTimer = setTimeout(function() { requestCredntialsViaPostMessage(authWindow); }, 500);
         }
     }
 
-    function handleAuthWindowClose (authWindow) {
+    function handleAuthWindowClose () {
         cancel({
             reason: 'unauthorized',
             errors: ['User canceled login']
@@ -70,6 +76,7 @@ var VinylAuth = (function vinylAuth(_config) {
     }
 
     function authenticate () {
+        config.authStartCallback({message: 'Auth has started'});
         openAuthWindow();
     }
 
