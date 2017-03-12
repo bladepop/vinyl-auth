@@ -2,14 +2,14 @@
  * Created by Daniel on 12/03/2017.
  */
 var authConfig = {
-    authUrl: 'provider.html',
-    authSuccessCallback: function (userData) {
+    authProviderUrl: 'provider.html',
+    handleAuthSuccess: function (userData) {
         console.log('auth success', userData);
     },
-    authFailureCallback: function (error) {
+    handleAuthFailure: function (error) {
         console.log('auth failure', error);
     },
-    authStartCallback: function (event) {
+    handleAuthStart: function (event) {
         console.log('auth start', event);
     }
 };

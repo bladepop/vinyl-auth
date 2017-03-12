@@ -4,13 +4,15 @@
 'use strict';
 var VinylAuth = (function vinylAuth(_config) {
 
-    var requestCredentialsPollingTimer;
     var config = {
-        authUrl: _config.authUrl || '',
-        authSuccessCallback: _config.authSuccessCallback || console.log,
-        authFailureCallback: _config.authFailureCallback || console.log,
-        authStartCallback: _config.authStartCallback || console.log
+        authProviderUrl: _config.authProviderUrl || '',
+        handleAuthSuccess: _config.handleAuthSuccess || console.log,
+        handleAuthFailure: _config.handleAuthFailure || console.log,
+        handleAuthStart: _config.handleAuthStart || console.log
     };
+
+    var requestCredentialsPollingTimer;
+
 
     function initialize () {
         initializeListeners();
@@ -52,7 +54,7 @@ var VinylAuth = (function vinylAuth(_config) {
 
     function cancel (reason) {
         requestCredentialsPollingTimer && clearTimeout(requestCredentialsPollingTimer);
-        config.authFailureCallback(reason);
+        config.handleAuthFailure(reason);
         setTimeout(function () { requestCredentialsPollingTimer = null; }, 0);
     }
 
@@ -72,16 +74,16 @@ var VinylAuth = (function vinylAuth(_config) {
 
     function handleValidAuth (user) {
         requestCredentialsPollingTimer && clearTimeout(requestCredentialsPollingTimer);
-        config.authSuccessCallback(user);
+        config.handleAuthSuccess(user);
     }
 
     function authenticate () {
-        config.authStartCallback({message: 'Auth has started'});
+        config.handleAuthStart({message: 'Auth has started'});
         openAuthWindow();
     }
 
     function openAuthWindow () {
-        requestCredntialsViaPostMessage(createPopup(config.authUrl));
+        requestCredntialsViaPostMessage(createPopup(config.authProviderUrl));
     }
 
     return {
