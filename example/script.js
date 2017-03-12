@@ -25,5 +25,9 @@ function doAuth(force) {
     auth.authenticate(force);
 }
 
+function showRecord() {
+    console.log(auth.getRecord());
+}
+
 doAuth(false);
 
