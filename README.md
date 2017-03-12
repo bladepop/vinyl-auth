@@ -5,15 +5,19 @@ A simple, short and vanilla javascript compatible token authentication library
 ## Configuration example
 ``` javascript
 var authConfig = {
-    authProviderUrl: 'provider.html',
+    authProviderPath: 'provider.html',          // the path for the auth provider page
+    storageTTL: 10,                             // in seconds
+    storage: new VinylStorage(localStorage),
+    refreshTokenPath: 'refreshtoken.json',      // if path is not set, refresh token mechanism is deactivated
+    refreshTokenInterval: 5,                    // in seconds
     handleAuthSuccess: function (userData) {
-        console.log('auth success', userData); // {auth_token: "xxxx", uid: "yyyy", name: "Slemp Diggler"}
+        console.log('auth success', userData);  // {auth_token: "xxxx", uid: "yyyy", name: "Slemp Diggler"}
     },
     handleAuthFailure: function (error) {
-        console.log('auth failure', error); // {reason: "unauthorized", errors: Array(1)}
+        console.log('auth failure', error);     // {reason: "unauthorized", errors: Array(1)}
     },
     handleAuthStart: function (event) {
-        console.log('auth start', event); //  // {message: "Auth has started"}
+        console.log('auth start', event);       // {message: "Auth has started"}
     }
 };
 ```
@@ -31,7 +35,7 @@ doAuth();
 ```
 
 ## TODO
-- Local storage token module
-- Token validation on refresh
-- Refresh token mechanism
+- ~~Local storage token module~~
+- Token validation on refresh - **On hold for now**
+- ~~Refresh token mechanism~~
 - Basic elements to indicate login process
