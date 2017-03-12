@@ -2,13 +2,17 @@
  * Created by Daniel on 12/03/2017.
  */
 'use strict';
-var AuthModule = (function authModule(config) {
+var VinylAuth = (function vinylAuth(_config) {
 
     var requestCredentialsPollingTimer;
-
+    var config = {
+        authUrl: _config.authUrl || '',
+        authSuccessCallback: _config.authSuccessCallback || console.log,
+        authFailureCallback: _config.authFailureCallback || console.log
+    };
 
     function initialize () {
-        this.initializeListeners();
+        initializeListeners();
         console.log('authModule initialized');
     }
 
@@ -26,37 +30,43 @@ var AuthModule = (function authModule(config) {
 
     function requestCredntialsViaPostMessage (authWindow) {
         if (authWindow.closed) {
-
+            handleAuthWindowClose(authWindow);
         } else {
             authWindow.postMessage("requestCredentials", "*");
             requestCredentialsPollingTimer = setTimeout(function() { requestCredntialsViaPostMessage(authWindow); }, 500);
         }
     }
 
+    function handleAuthWindowClose (authWindow) {
+        cancel({
+            reason: 'unauthorized',
+            errors: ['User canceled login']
+        });
+    }
+
+    function cancel (reason) {
+        requestCredentialsPollingTimer && clearTimeout(requestCredentialsPollingTimer);
+        config.authFailureCallback(reason);
+        setTimeout(function () { requestCredentialsPollingTimer = null; }, 0);
+    }
+
     function handlePostMessage (ev) {
-        console.log(ev);
         if (ev.data.message == 'deliverCredentials') {
             delete ev.data.message;
-
-            handleValidAuth(ev.data, true);
-            // broadcast login
+            handleValidAuth(ev.data);
         }
         if (ev.data.message == 'authFailure') {
             var error = {
                 reason: 'unauthorized',
                 errors: [ev.data.error]
             }
-            // cancel(error) + broadcast error
+            cancel(error);
         }
     }
 
-    function handleValidAuth (user, setHeader) {
-        setHeader = setHeader || false;
-
+    function handleValidAuth (user) {
         requestCredentialsPollingTimer && clearTimeout(requestCredentialsPollingTimer);
-
-        console.log(user);
-
+        config.authSuccessCallback(user);
     }
 
     function authenticate () {
@@ -69,16 +79,6 @@ var AuthModule = (function authModule(config) {
 
     return {
         initialize: initialize,
-        initializeListeners: initializeListeners,
         authenticate: authenticate
     }
 });
-
-
-var authConfig = {
-    authUrl: 'provider.html'
-};
-
-var auth = new AuthModule(authConfig);
-auth.initialize();
-auth.authenticate();
