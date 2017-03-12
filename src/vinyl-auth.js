@@ -13,6 +13,7 @@ var VinylAuth = (function vinylAuth(_config) {
         storageTTL: _config.storageTTL || 1200, // seconds
         refreshTokenPath: _config.refreshTokenPath || null,
         refreshTokenInterval: _config.refreshTokenInterval || 600, // seconds
+        requestCredentialsPollingTimerInterval: 500
     };
 
     var requestCredentialsPollingTimer;
@@ -48,7 +49,7 @@ var VinylAuth = (function vinylAuth(_config) {
             handleAuthWindowClose();
         } else {
             authWindow.postMessage("requestCredentials", "*");
-            requestCredentialsPollingTimer = setTimeout(function() { requestCredntialsViaPostMessage(authWindow); }, 500);
+            requestCredentialsPollingTimer = setTimeout(function() { requestCredntialsViaPostMessage(authWindow); }, config.requestCredentialsPollingTimerInterval);
         }
     }
 
