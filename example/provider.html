@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.addEventListener("message", function(ev) {
+
+            // this page must respond to "requestCredentials"
+            if (ev.data === "requestCredentials") {
+
+                ev.source.postMessage({
+                    message: "deliverCredentials", // required
+                    auth_token: 'xxxx', // required
+                    uid: 'yyyy', // required
+
+                    // additional params will be added to the user object
+                    name: 'Slemp Diggler'
+                    // etc.
+
+                }, '*');
+
+                // close window after message is sent
+                window.close();
+            }
+        });
+    </script>
+</head>
+<body>
+<pre>
+      Redirecting...
+    </pre>
+</body>
+</html>
