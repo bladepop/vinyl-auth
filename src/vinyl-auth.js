@@ -139,9 +139,17 @@ var VinylAuth = (function vinylAuth(_config) {
         }
     }
 
+    function logout () {
+        currentUserRecord = null;
+        if (!!config.storage) {
+            config.storage.set(null);
+        }
+    }
+
     return {
         initialize: initialize,
         authenticate: authenticate,
-        getRecord: getRecord
+        getRecord: getRecord,
+        logout: logout
     }
 });

@@ -23,6 +23,9 @@ var VinylStorage = (function vinylStorage (storage) {
     }
 
     function set (record, TTL) {
+        if (record == null) {
+            return delete storage['vinylRecord'];
+        }
         record.TTL = getCurrentTimestamp() + TTL;
         storage.setItem('vinylRecord', JSON.stringify(record));
     }

@@ -3,10 +3,10 @@
  */
 var authConfig = {
     authProviderPath: 'provider.html',          // the path for the auth provider page
-    storageTTL: 10,                             // in seconds
+    storageTTL: 60,                             // in seconds
     storage: new VinylStorage(localStorage),
     refreshTokenPath: 'refreshtoken.json',      // if path is not set, refresh token mechanism is deactivated
-    refreshTokenInterval: 5,                    // in seconds
+    refreshTokenInterval: 3,                    // in seconds
     handleAuthSuccess: function (userData) {
         console.log('auth success', userData);  // {auth_token: "xxxx", uid: "yyyy", name: "Slemp Diggler"}
     },
@@ -27,6 +27,10 @@ function doAuth(force) {
 
 function showRecord() {
     console.log(auth.getRecord());
+}
+
+function logout() {
+    auth.logout();
 }
 
 doAuth(false);
