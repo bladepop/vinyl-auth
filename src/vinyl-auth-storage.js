@@ -2,7 +2,8 @@
  * Created by Daniel on 12/03/2017.
  */
 'use strict';
-var VinylStorage = (function vinylStorage (storage) {
+var Vinyl = Vinyl || {};
+Vinyl.VinylStorage = (function vinylStorage (storage) {
 
     function get () {
         var record = storage.getItem('vinylRecord');

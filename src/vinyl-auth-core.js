@@ -2,7 +2,8 @@
  * Created by Daniel on 12/03/2017.
  */
 'use strict';
-var VinylAuth = (function vinylAuth(_config) {
+var Vinyl = Vinyl || {};
+Vinyl.VinylAuth = (function vinylAuth(_config) {
 
     var config = {
         authProviderPath: _config.authProviderPath || '',

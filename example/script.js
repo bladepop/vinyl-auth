@@ -4,7 +4,7 @@
 var authConfig = {
     authProviderPath: 'provider.html',          // the path for the auth provider page
     storageTTL: 60,                             // in seconds
-    storage: new VinylStorage(localStorage),
+    storage: new Vinyl.VinylStorage(localStorage),
     refreshTokenPath: 'refreshtoken.json',      // if path is not set, refresh token mechanism is deactivated
     refreshTokenInterval: 15,                    // in seconds
     handleAuthSuccess: function (userData) {
@@ -24,7 +24,7 @@ var authConfig = {
     }
 };
 
-var auth = new VinylAuth(authConfig);
+var auth = new Vinyl.VinylAuth(authConfig);
 auth.initialize();
 
 function doAuth(force) {
