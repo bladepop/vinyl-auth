@@ -1,5 +1,6 @@
 /**
- * Created by Daniel on 12/03/2017.
+ * Created by Daniel Baruch on 12/03/2017.
+ * https://github.com/bladepop/vinyl-auth
  */
 'use strict';
 var Vinyl = Vinyl || {};
