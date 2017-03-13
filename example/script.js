@@ -18,6 +18,9 @@ var authConfig = {
     },
     handleAuthLogout: function (event) {
         console.log('logout', event);           // {message: "Logout"}
+    },
+    handleAuthTokenExpiry: function (event) {
+        console.log('token expired', event);    // {message: "Token has expired"}
     }
 };
 

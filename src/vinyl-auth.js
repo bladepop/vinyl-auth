@@ -10,6 +10,7 @@ var VinylAuth = (function vinylAuth(_config) {
         handleAuthFailure: _config.handleAuthFailure || console.log,
         handleAuthStart: _config.handleAuthStart || console.log,
         handleAuthLogout: _config.handleAuthLogout || console.log,
+        handleAuthTokenExpiry: _config.handleAuthTokenExpiry || console.log,
         storage: _config.storage || null,
         storageTTL: _config.storageTTL || 1200, // seconds
         refreshTokenPath: _config.refreshTokenPath || null,
@@ -108,6 +109,9 @@ var VinylAuth = (function vinylAuth(_config) {
                 if (this.readyState == 4 && this.status == 200) {
                     var record = JSON.parse(this.responseText);
                     setRecord(record);
+                } else if (this.readyState == 4) {
+                    setRecord(null);
+                    config.handleAuthTokenExpiry({message: "Token has expired"});
                 }
             };
             xmlhttp.open("GET", url, true);
