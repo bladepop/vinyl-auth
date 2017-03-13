@@ -38,3 +38,14 @@ function logout() {
 
 doAuth(false);
 
+
+if (auth.getRecord() == false) {
+    // Show login overlay
+    // Overlay with injected template
+    // Prompt login process
+    // Show a link in case the pop up failed to open
+    // Hide the overlay after successful login
+    // +Show the overlay after logout
+    // +Handle token expiry and show overlay and force re-login
+}
+
