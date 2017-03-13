@@ -7,7 +7,7 @@ A simple, short and vanilla javascript compatible token authentication library
 var authConfig = {
     authProviderPath: 'provider.html',          // the path for the auth provider page
     storageTTL: 60,                             // in seconds
-    storage: new VinylStorage(localStorage),
+    storage: new Vinyl.VinylStorage(localStorage),
     refreshTokenPath: 'refreshtoken.json',      // if path is not set, refresh token mechanism is deactivated
     refreshTokenInterval: 15,                    // in seconds
     handleAuthSuccess: function (userData) {
@@ -29,9 +29,13 @@ var authConfig = {
 ```
 
 ## Basic usage example
+Include the library
+``` html
+    <script type="application/javascript" src="../dist/vinyl-auth.min.js" ></script>
+```
+To instansiate a new VinylAuth module use the **Vinyl.VinylAuth(config)** command from anywhere in your code.
 ``` javascript
-
-var auth = new VinylAuth(authConfig);
+var auth = new Vinyl.VinylAuth(authConfig);
 auth.initialize();
 
 function doAuth(force) {
