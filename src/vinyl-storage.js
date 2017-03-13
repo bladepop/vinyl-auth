@@ -1,6 +1,7 @@
 /**
  * Created by Daniel on 12/03/2017.
  */
+'use strict';
 var VinylStorage = (function vinylStorage (storage) {
 
     function get () {
