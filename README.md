@@ -21,6 +21,9 @@ var authConfig = {
     },
     handleAuthLogout: function (event) {
         console.log('logout', event);           // {message: "Logout"}
+    },
+    handleAuthTokenExpiry: function (event) {
+        console.log('token expired', event);    // {message: "Token has expired"}
     }
 };
 ```
@@ -48,6 +51,6 @@ doAuth(false);
 
 ## TODO
 - ~~Local storage token module~~
-- Token validation on refresh - **On hold for now**
+- ~~Token validation on refresh~~
 - ~~Refresh token mechanism~~
-- Basic elements to indicate login process
+- Login Overlay example
